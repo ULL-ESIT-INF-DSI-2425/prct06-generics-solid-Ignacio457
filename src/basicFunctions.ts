@@ -1,42 +1,122 @@
 /**
- * Adds two __numbers__
- * @param firstNumber - Consists of the first operand of the addition
- * @param secondNumber - Consists of the second operand of the addition
- * @returns The addition of the two numbers `firstNumber` and `secondNumber`
- * ```typescript
- * add(1, 7) = 8
- * ```
+ * Interfaz genérica para coleccionar
+ * @template T Tipo genérico que especifica el tipo de los operandos y el resultado.
  */
-export function add(firstNumber: number, secondNumber: number): number {
-  return firstNumber + secondNumber;
+
+export interface Collectable<T> {
+    
+    /**
+    * @method addItem añade un elemento.
+    * @param item - Elemento a añadir.
+    */
+     addItem(item: T): void;
+
+    /**
+    * @method getItem devuelve un elemento de la posicion indice.
+    * @param indice - Posicion del elemento a devolver.
+    * @returns devuelve el elemento de tipo T o undefined si no lo encuentra
+    */
+    getItem(indice: number): T | undefined;
+    
+     /**
+    * @method removeItem remueve un elemento.
+    * @param item - Elemento a eliminar.
+    */
+     removeItem(item: T): void;
+    
+     /**
+    * @method getNumberOfItems ??? un elemento.
+    * @param item - Elemento a ???.
+    */
+     getNumberOfItems(item: T): number;
 }
 
-/**
- * Substracts two __numbers__
- * @param firstNumber - Consists of the first operand of the substraction
- * @param secondNumber - Consists of the second operand of the substraction
- * @returns The substraction of the two numbers `firstNumber` and `secondNumber`
- * ```typescript
- * sub(1, 7) = -6
- * ```
- *
- */
-export function sub(firstNumber: number, secondNumber: number): number {
-  return firstNumber - secondNumber;
-}
 
 /**
- *
- * @param firstNumber - Consists of the first operand of the division
- * @param secondNumber - Consists of the second operand of the division
- * @returns The division of the two numbers `firstNumber` and `secondNumber`
- * ```typescript
- * div(4, 8) = 0.5
- * ```
+ * Interfaz genérica para imprimir
+ * @template T Tipo genérico que especifica el tipo de los operandos y el resultado.
  */
-export function div(firstNumber: number, secondNumber: number): number {
-  if (secondNumber === 0) {
-    throw new Error("Zero division");
+export interface Printable {
+    /**
+   * @method print imprime una cadena de elementos.
+   * @retun devuelve la cadena de caracteres.
+   */
+   print(): string;
+
+}
+
+
+export abstract class PrintableCollection<T> implements Collectable<T>, Printable {
+
+    protected items: T[];
+
+   /**
+   * @param items - Array que almacena los elementos de la colección.
+   */
+    constructor() {
+      this.items = [];
+    }
+
+    /**
+    * @method addItem añade un elemento.
+    * @param item - Elemento a añadir.
+    */
+    addItem(item: T): void {
+        this.items.push(item);
+    }
+
+    /**
+    * @method getItem devuelve un elemento de la posicion indice.
+    * @param indice - Posicion del elemento a devolver.
+    * @returns devuelve el elemento de tipo T o undefined si no lo encuentra
+    */
+    removeItem(item: T): void {
+        this.items = this.items.filter(i => i !== item);
+    }
+
+   /**
+    * @method removeItem remueve un elemento.
+    * @param item - Elemento a eliminar.
+    */
+    getItem(indice: number): T | undefined {
+        return this.items[indice]
+    }
+
+   /**
+    * @method getNumberOfItems devuelve el numero de elementos.
+    * @return el numero de elemntos
+    */
+    getNumberOfItems(): number {
+      let iteraccion = 0;
+      let auxiliar = this.items ;
+      this.items.forEach((items) => {
+        iteraccion++;
+      });
+      return iteraccion;
+    }
+
+  /**
+   * @method print imprime una cadena de elementos.
+   * @retun devuelve la cadena de caracteres.
+   */
+    abstract print(): string;
+}
+
+
+export class Numeros {
+  constructor(public numero: number) {}
+}
+
+
+export class NumericPrintableCollection extends PrintableCollection<Numeros> {
+
+  print(): string {
+    let iteraccion = 0;
+    let solucion = "La coleccion de numeros basicos es:";
+    this.items.forEach((items) => {
+      solucion = solucion + " " + this.items[iteraccion].numero;
+      iteraccion++;
+    });
+    return solucion;
   }
-  return firstNumber / secondNumber;
 }
