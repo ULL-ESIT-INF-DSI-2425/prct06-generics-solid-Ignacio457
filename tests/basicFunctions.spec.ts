@@ -1,43 +1,40 @@
 import { describe, expect, test } from "vitest";
-import { add, sub, div } from "../src/basicFunctions";
+import { Collectable, Printable, PrintableCollection, NumericPrintableCollection, Numeros } from "../src/basicFunctions";
 
-// prueba
-describe("add function tests", () => {
-  test("add(1, 8) returns value 9", () => {
-    expect(add(1, 8)).toBe(9);
+
+describe("Colección de numeros", () => {
+  let coleccion = new NumericPrintableCollection;
+  test("Agregar e imprimir", () => {
+    coleccion.addItem(new Numeros(1));
+    coleccion.addItem(new Numeros(2));
+    coleccion.addItem(new Numeros(3));    
+    expect(coleccion.print()).toStrictEqual("La coleccion de numeros basicos es: 1 2 3")
   });
 
-  test("add(-1, 8) returns value 7", () => {
-    expect(add(-1, 8)).toBe(7);
+  test("Eliminar e imprimir", () => {
+    coleccion.addItem(new Numeros(1));
+    coleccion.addItem(new Numeros(2));
+    coleccion.addItem(new Numeros(3));
+    coleccion.removeItem(new Numeros(3));
+    expect(coleccion.print()).toStrictEqual("La coleccion de numeros basicos es: 1 2")
   });
+
+  test("Numero de elementos e imprimir", () => {
+    coleccion.addItem(new Numeros(1));
+    coleccion.addItem(new Numeros(2));
+    coleccion.addItem(new Numeros(3));
+    let solucion = coleccion.getNumberOfItems();
+    expect(solucion.numero).toBe(3);
+  });
+  
+  test("Posicion e imprimir", () => {
+    coleccion.addItem(new Numeros(1));
+    coleccion.addItem(new Numeros(2));
+    let solucion = coleccion.getItem(1);
+    expect(solucion.numero).toBe(2);
+  });
+
+
 });
 
-describe("sub function tests", () => {
-  test("sub(10, 7) returns value 3", () => {
-    expect(sub(10, 7)).toBe(3);
-  });
 
-  test("sub(-1, 8) returns value -9", () => {
-    expect(sub(-1, 8)).toBe(-9);
-  });
-
-  test("sub(10, 3) returns value 7", () => {
-    expect(sub(10, 3)).toBe(7);
-  });
-});
-
-describe("div function tests", () => {
-  test("div(17, 0) throws an error", () => {
-    // Expect must be used in this way, if the test consists of
-    // checking if an error is thrown by any function
-    expect(() => div(17, 0)).toThrowError("Zero division");
-  });
-
-  test("div(4, 8) returns value 0.5", () => {
-    expect(div(4, 8)).toBe(0.5);
-  });
-
-  test("div(1, 3) returns value 0.3", () => {
-    expect(div(1, 3)).toBeCloseTo(0.33);
-  });
-});
