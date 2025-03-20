@@ -1,91 +1,46 @@
 import { describe, expect, test } from "vitest";
-import { Collectable, Printable } from "../src/interfaces";
-import { PrintableCollection, NumericPrintableCollection, Numeros } from "../src/basicFunctions";
-import { NumericPrintableCollection } from "../src/coleccionNumero";
-import { StringPrintableCollection } from "../src/coleccionString";
-
-describe("Colección de numeros", () => {
-  let coleccion = new NumericPrintableCollection;
-  test("Agregar e imprimir", () => {
-    coleccion.addItem(1);
-    coleccion.addItem(2);
-    coleccion.addItem(3);    
-    expect(coleccion.print()).toStrictEqual("La coleccion de numeros basicos es: 1 2 3")
-  });
+import {Acciones, TipoAcciones, Logger} from "../src/basicFunctions";
 
 
-  test("Eliminar e imprimir", () => {
-    coleccion.addItem(1);
-    coleccion.addItem(2);
-    coleccion.addItem(3);
-    coleccion.removeItem(3);
-    expect(coleccion.print()).toStrictEqual("La coleccion de numeros basicos es: 1 2 1 2")
-  });
+
+describe("Loggeados ", () => {
+    let logger = Logger.getLogger();
+    let accion1: Acciones;
+    let accion2: Acciones;
+    let solucion: Acciones[];
 
 
-  test("Numero de elementos e imprimir", () => {
-    coleccion.addItem(1);
-    coleccion.addItem(2);
-    coleccion.addItem(3);
-    let solucion = coleccion.getNumberOfItems();
-    expect(solucion).toBe(7);
-  });
-  
-  test("Posicion e imprimir", () => {
-    coleccion.addItem(1);
-    coleccion.addItem(2);
-    let solucion = coleccion.getItem(0);
-    expect(solucion).toBe(1);
-  });
+    test("Agregar y buscar por nombre", () => {
+        accion1 = ["Pepe", TipoAcciones.INICIO, new Date(100000000000)];
+        logger.addItem(accion1);
+	let solucion = logger.print();
+        expect(solucion).toBe("Las acciones guardadas: Pepe,1,Sat Mar 03 1973 09:46:40 GMT+0000 (tiempo universal coordinado) undefined undefined");
 
+    });
+
+
+
+    test("Buscar por nombre", () => {
+        logger.buscarPorNombre("Pepe");
+
+        let solucion = logger.print();
+        expect(solucion).toBe("Las acciones guardadas: Pepe,1,Sat Mar 03 1973 09:46:40 GMT+0000 (tiempo universal coordinado) undefined undefined");
+    });
+
+    test("Buscar por accion", () => {
+       logger.buscarPorAccion(TipoAcciones.INICIO);
+
+        let solucion = logger.print();
+        expect(solucion).toBe("Las acciones guardadas: Pepe,1,Sat Mar 03 1973 09:46:40 GMT+0000 (tiempo universal coordinado) undefined undefined");
+
+    });
+
+    test("Buscar por accion", () => {
+       logger.buscarPorTiempo(new Date(50000000000), new Date(150000000000));
+
+        let solucion = logger.print();
+        expect(solucion).toBe("Las acciones guardadas: Pepe,1,Sat Mar 03 1973 09:46:40 GMT+0000 (tiempo universal coordinado) undefined undefined");
+
+    });
 
 });
-
-
-describe('StringPrintableCollection', () => {
-  test('Agregar e imprimir', () => {
-    const collection = new StringPrintableCollection();
-    collection.addItem("hola");
-    collection.addItem("mundo");
-    collection.addItem("!");
-    expect(collection.print()).toStrictEqual("La coleccion de cadenas es: hola mundo !");
-  });
-
-  test('Eliminar e imprimir', () => {
-    const collection = new StringPrintableCollection();
-    collection.addItem("uno");
-    collection.addItem("dos");
-    collection.addItem("tres");
-    collection.removeItem("dos");
-    expect(collection.print()).toStrictEqual("La coleccion de cadenas es: uno tres");
-  });
-
-  test('Obtener número de elementos', () => {
-    const collection = new StringPrintableCollection();
-    collection.addItem("a");
-    collection.addItem("b");
-    collection.addItem("c");
-    expect(collection.getNumberOfItems()).toBe(3);
-  });
-
-  test('Obtener item por índice', () => {
-    const collection = new StringPrintableCollection();
-    collection.addItem("primero");
-    collection.addItem("segundo");
-    collection.addItem("tercero");
-    expect(collection.getItem(1)).toBe("segundo");
-    expect(collection.getItem(3)).toBeUndefined();
-  });
-
-  test('Remover item no existente no afecta la colección', () => {
-    const collection = new StringPrintableCollection();
-    collection.addItem("a");
-    collection.addItem("b");
-    collection.removeItem("c");
-    expect(collection.getNumberOfItems()).toBe(2);
-    expect(collection.print()).toStrictEqual("La coleccion de cadenas es: a b");
-  });
-});
-
-
-
