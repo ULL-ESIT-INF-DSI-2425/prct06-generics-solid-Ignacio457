@@ -29,15 +29,15 @@ export class Logger {
     }
 
     buscarPorNombre(nombre: string): Acciones[] {
-        return this.loger.filter(loger => loger[0] === nombre);
+        this.loger = this.loger.filter(loger => loger[0] === nombre);
     }
  
     buscarPorAccion(accion: TipoAcciones): Acciones[] {
-        return this.loger.filter(loger => loger[1] === accion);
+        this.loger = this.loger.filter(loger => loger[1] === accion);
     }
 
     buscarPorTiempo(fecha1: Date, fecha2: Date): Acciones[] {
-        return this.loger.filter(loger => loger[2] >= fecha1 || loger[2] <= fecha2);
+        this.loger = this.loger.filter(loger => loger[2] >= fecha1 || loger[2] <= fecha2);
     }
 
     print(): string {
