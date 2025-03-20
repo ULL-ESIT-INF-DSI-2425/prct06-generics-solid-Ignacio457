@@ -1,57 +1,54 @@
-import { Collectable, Printable } from "../src/interfaces";
 
 
 
-export abstract class PrintableCollection<T> implements Collectable<T>, Printable {
+export type Acciones = [string, TipoAcciones, Date];
 
-    protected items: T[];
 
-   /**
-   * @param items - Array que almacena los elementos de la colección.
-   */
-    constructor() {
-      this.items = [];
+export enum TipoAcciones {CERRAR, INICIO, ROMPER};
+
+
+export class Logger {
+    
+    private loger: Acciones[];
+    private static loggeado: Logger;
+
+    private constructor( ) {
+        this.loger = [];
     }
 
-    /**
-    * @method addItem añade un elemento.
-    * @param item - Elemento a añadir.
-    */
-    addItem(item: T): void {
-        this.items.push(item);
+
+    public static getLogger(): Logger {
+        if (!Logger.loggeado) {
+            Logger.loggeado = new Logger();
+        }
+        return Logger.loggeado;
     }
 
-    /**
-    * @method getItem devuelve un elemento de la posicion indice.
-    * @param indice - Posicion del elemento a devolver.
-    * @returns devuelve el elemento de tipo T o undefined si no lo encuentra
-    */
-    removeItem(item: T): void {
-        this.items = this.items.filter(i => i !== item);
+    addItem(item: Acciones) {
+        Logger.loggeado.loger.push(item);
     }
 
-   /**
-    * @method removeItem remueve un elemento.
-    * @param item - Elemento a eliminar.
-    */
-    getItem(indice: number): T | undefined {
-        return this.items[indice];
+    buscarPorNombre(nombre: string): Acciones[] {
+        return this.loger.filter(loger => loger[0] === nombre);
+    }
+ 
+    buscarPorAccion(accion: TipoAcciones): Acciones[] {
+        return this.loger.filter(loger => loger[1] === accion);
     }
 
-   /**
-    * @method getNumberOfItems devuelve el numero de elementos.
-    * @return el numero de elemntos
-    */
-    getNumberOfItems(): number {
-      return this.items.length;
+    buscarPorTiempo(fecha1: Date, fecha2: Date): Acciones[] {
+        return this.loger.filter(loger => loger[2] >= fecha1 || loger[2] <= fecha2);
     }
 
-  /**
-   * @method print imprime una cadena de elementos.
-   * @retun devuelve la cadena de caracteres.
-   */
-    abstract print(): string;
+    print(): string {
+        let solucion = "Las acciones guardadas:";
+        this.loger.forEach((loger) => { 
+            solucion = solucion + " " + this.loger[0] + " " + this.loger[1] + " " + this.loger[2];
+        });
+        return solucion;
+    }
 }
 
 
 
+// Haga que la clase Logger sea iterable.
